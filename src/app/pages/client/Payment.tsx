@@ -1,33 +1,31 @@
-import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ClientNavigation } from '../../components/ClientNavigation';
+import { gamingStations } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { CreditCard, Lock } from 'lucide-react';
+import { CreditCard, Lock, DollarSign, Calendar, Clock, MapPin } from 'lucide-react';
 
 export function Payment() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { totalPrice } = location.state || {};
+  const { selectedStation, date, startTime, endTime, totalPrice } = location.state || {};
 
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvv, setCvv] = useState('');
+  const station = gamingStations.find(s => s.id === selectedStation);
 
-  if (!totalPrice) {
+  if (!totalPrice || !station) {
     navigate('/booking/selection');
     return null;
   }
 
-  const handlePayment = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate payment processing
+  const handleStripeRedirect = () => {
+    // Simulation de la redirection vers Stripe
+    // En production, ceci serait remplacé par une vraie redirection Stripe Checkout
+    console.log('Redirection vers Stripe Checkout...');
+    
+    // Simulation d'un délai de traitement
     setTimeout(() => {
       navigate('/booking/confirmation', { state: location.state });
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -63,100 +61,129 @@ export function Payment() {
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold mb-8">Paiement Sécurisé</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">Paiement Sécurisé</h1>
 
         <div className="max-w-2xl mx-auto">
+          {/* Récapitulatif de commande */}
+          <Card className="p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Récapitulatif de votre réservation</h2>
+            
+            <div className="space-y-4">
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold">{station.name}</div>
+                  <div className="text-sm text-gray-600 mt-1">
+                    {station.specs.cpu} • {station.specs.gpu}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div>
+                  <div className="font-semibold">Date</div>
+                  <div className="text-gray-600">
+                    {new Date(date).toLocaleDateString('fr-FR', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                <Clock className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div>
+                  <div className="font-semibold">Horaires</div>
+                  <div className="text-gray-600">
+                    De {startTime} à {endTime}
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t pt-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-lg">Total à payer</span>
+                  <div className="flex items-center gap-1">
+                    <DollarSign className="w-5 h-5 text-blue-600" />
+                    <span className="font-bold text-2xl text-blue-600">{totalPrice}€</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Carte de paiement Stripe */}
           <Card className="p-8">
-            <div className="flex items-center justify-center mb-6">
-              <div className="flex items-center gap-2 text-green-600">
+            <div className="text-center mb-6">
+              <div className="flex items-center justify-center gap-2 text-green-600 mb-4">
                 <Lock className="w-5 h-5" />
-                <span className="text-sm">Paiement 100% sécurisé</span>
+                <span className="text-sm font-medium">Paiement 100% sécurisé par Stripe</span>
+              </div>
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" 
+                alt="Stripe" 
+                className="h-8 mx-auto opacity-75"
+              />
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+              <div className="flex items-start gap-3">
+                <CreditCard className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-2">
+                    Redirection vers Stripe Checkout
+                  </h3>
+                  <p className="text-sm text-blue-800">
+                    En cliquant sur "Procéder au paiement", vous serez redirigé vers la page de 
+                    paiement sécurisée Stripe pour finaliser votre réservation.
+                  </p>
+                  <p className="text-xs text-blue-700 mt-2">
+                    Aucune donnée bancaire n'est stockée sur nos serveurs.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <form onSubmit={handlePayment} className="space-y-6">
-              <div>
-                <Label htmlFor="cardNumber">Numéro de carte</Label>
-                <div className="relative">
-                  <CreditCard className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="cardNumber"
-                    type="text"
-                    placeholder="1234 5678 9012 3456"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    className="pl-10"
-                    maxLength={19}
-                    required
-                  />
-                </div>
-              </div>
+            <div className="space-y-3">
+              <Button 
+                onClick={handleStripeRedirect}
+                className="w-full" 
+                size="lg"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                Payer {totalPrice}€ avec Stripe
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate(-1)}
+              >
+                Retour
+              </Button>
+            </div>
 
-              <div>
-                <Label htmlFor="cardName">Nom sur la carte</Label>
-                <Input
-                  id="cardName"
-                  type="text"
-                  placeholder="JEAN DUPONT"
-                  value={cardName}
-                  onChange={(e) => setCardName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="expiry">Date d'expiration</Label>
-                  <Input
-                    id="expiry"
-                    type="text"
-                    placeholder="MM/AA"
-                    value={expiry}
-                    onChange={(e) => setExpiry(e.target.value)}
-                    maxLength={5}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="cvv">CVV</Label>
-                  <Input
-                    id="cvv"
-                    type="text"
-                    placeholder="123"
-                    value={cvv}
-                    onChange={(e) => setCvv(e.target.value)}
-                    maxLength={3}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold">Montant total</span>
-                  <span className="text-2xl font-bold text-blue-600">{totalPrice}€</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Button type="submit" className="w-full" size="lg">
-                  Payer {totalPrice}€
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => navigate(-1)}
-                >
-                  Retour
-                </Button>
-              </div>
-
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Vos informations de paiement sont cryptées et sécurisées
-              </p>
-            </form>
+            <div className="mt-6 flex items-center justify-center gap-4 text-xs text-gray-500">
+              <span>🔒 SSL/TLS</span>
+              <span>•</span>
+              <span>PCI-DSS Compliant</span>
+              <span>•</span>
+              <span>3D Secure</span>
+            </div>
           </Card>
+
+          {/* Note informative */}
+          <div className="mt-6 text-center text-sm text-gray-600">
+            <p>
+              💡 <strong>Note :</strong> Ceci est une démonstration. En production, vous seriez redirigé 
+              vers la vraie page Stripe Checkout.
+            </p>
+          </div>
         </div>
       </div>
     </div>

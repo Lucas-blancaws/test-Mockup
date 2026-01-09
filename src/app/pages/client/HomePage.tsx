@@ -14,7 +14,7 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-4">
-              Réservez Votre Station en Quelques Clics
+              Réservez Votre PC en Quelques Clics
             </h1>
             <p className="text-xl mb-8 text-blue-100">
               Service de réservation rapide et simple pour tous vos besoins
@@ -94,7 +94,7 @@ export function HomePage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2026 BookStation. Tous droits réservés.</p>
+          <p>&copy; 2026 Hub Esport. Tous droits réservés.</p>
         </div>
       </footer>
     </div>

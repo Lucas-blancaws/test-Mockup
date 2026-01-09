@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ClientNavigation } from '../../components/ClientNavigation';
-import { stations } from '../../data/mockData';
+import { gamingStations } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { Calendar, Clock, MapPin, DollarSign } from 'lucide-react';
@@ -10,7 +10,7 @@ export function BookingRecap() {
   const location = useLocation();
   const { selectedStation, date, startTime, endTime } = location.state || {};
 
-  const station = stations.find(s => s.id === selectedStation);
+  const station = gamingStations.find(s => s.id === selectedStation);
   
   if (!station || !date || !startTime || !endTime) {
     navigate('/booking/selection');
@@ -24,7 +24,7 @@ export function BookingRecap() {
   };
 
   const hours = calculateHours();
-  const totalPrice = station.price * hours;
+  const totalPrice = station.pricePerHour * hours;
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ClientNavigation } from '../../components/ClientNavigation';
-import { stations } from '../../data/mockData';
+import { gamingStations } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';
@@ -62,7 +62,7 @@ export function BookingSelection() {
           {/* Station List */}
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {stations.map((station) => (
+              {gamingStations.map((station) => (
                 <Card
                   key={station.id}
                   className={`p-6 cursor-pointer transition-all ${
@@ -77,7 +77,7 @@ export function BookingSelection() {
                       <h3 className="font-semibold text-lg">{station.name}</h3>
                       <div className="flex items-center text-gray-600 text-sm mt-1">
                         <MapPin className="w-4 h-4 mr-1" />
-                        {station.location}
+                        {station.specs.cpu}
                       </div>
                     </div>
                     {station.available ? (
@@ -87,13 +87,13 @@ export function BookingSelection() {
                     )}
                   </div>
                   <div className="text-sm text-gray-600 mb-2">
-                    Type: {station.type}
+                    GPU: {station.specs.gpu}
                   </div>
                   <div className="text-sm text-gray-600 mb-3">
                     Capacité: {station.capacity} places
                   </div>
                   <div className="text-2xl font-bold text-blue-600">
-                    {station.price}€<span className="text-sm text-gray-500">/heure</span>
+                    {station.pricePerHour}€<span className="text-sm text-gray-500">/heure</span>
                   </div>
                   {!station.available && (
                     <div className="mt-2 text-sm text-red-600">Non disponible</div>

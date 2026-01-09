@@ -1,5 +1,5 @@
 import { AdminSidebar } from '../../components/AdminSidebar';
-import { statsData, reservations, stations } from '../../data/mockData';
+import { statsData, reservations, gamingStations } from '../../data/mockData';
 import { Card } from '../../components/ui/card';
 import { TrendingUp, TrendingDown, DollarSign, Users, Calendar, MapPin } from 'lucide-react';
 import {
@@ -21,7 +21,7 @@ import {
 export function AdminStatistics() {
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
-  const stationUsageData = stations.map(station => ({
+  const stationUsageData = gamingStations.map(station => ({
     name: station.name,
     usage: Math.floor(Math.random() * 100) + 20
   }));

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AdminSidebar } from '../../components/AdminSidebar';
-import { stations } from '../../data/mockData';
+import { gamingStations } from '../../data/mockData';
 import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -10,7 +10,7 @@ import { Plus, Search, Edit, Trash2, MapPin } from 'lucide-react';
 export function AdminStationManagement() {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredStations = stations.filter(station =>
+  const filteredStations = gamingStations.filter(station =>
     station.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     station.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -50,18 +50,18 @@ export function AdminStationManagement() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card className="p-6">
               <p className="text-sm text-gray-600 mb-1">Total Stations</p>
-              <p className="text-3xl font-bold">{stations.length}</p>
+              <p className="text-3xl font-bold">{gamingStations.length}</p>
             </Card>
             <Card className="p-6">
               <p className="text-sm text-gray-600 mb-1">Stations Actives</p>
               <p className="text-3xl font-bold text-green-600">
-                {stations.filter(s => s.available).length}
+                {gamingStations.filter(s => s.available).length}
               </p>
             </Card>
             <Card className="p-6">
               <p className="text-sm text-gray-600 mb-1">Stations Inactives</p>
               <p className="text-3xl font-bold text-red-600">
-                {stations.filter(s => !s.available).length}
+                {gamingStations.filter(s => !s.available).length}
               </p>
             </Card>
           </div>
@@ -89,12 +89,12 @@ export function AdminStationManagement() {
                     <span className="font-medium">{station.type}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Capacité</span>
-                    <span className="font-medium">{station.capacity} places</span>
+                    <span className="text-gray-600">Tarif horaire</span>
+                    <span className="font-medium text-blue-600">{station.pricePerHour}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Tarif horaire</span>
-                    <span className="font-medium text-blue-600">{station.price}€</span>
+                    <span className="font-medium text-blue-600">{station.pricePerHour}€</span>
                   </div>
                 </div>
 

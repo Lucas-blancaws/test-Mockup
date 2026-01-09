@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ClientNavigation } from '../../components/ClientNavigation';
-import { reservations, stations } from '../../data/mockData';
+import { reservations, gamingStations } from '../../data/mockData';
 import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Calendar, MapPin, Clock, DollarSign, User, ChevronLeft, Download } from 'lucide-react';
@@ -9,7 +9,7 @@ export function ReservationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const reservation = reservations.find(r => r.id === id);
-  const station = reservation ? stations.find(s => s.name === reservation.stationName) : null;
+  const station = reservation ? gamingStations.find(s => s.id === reservation.stationId) : null;
 
   if (!reservation) {
     return (

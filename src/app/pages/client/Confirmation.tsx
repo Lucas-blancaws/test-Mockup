@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ClientNavigation } from '../../components/ClientNavigation';
-import { stations } from '../../data/mockData';
+import { gamingStations } from '../../data/mockData';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { CheckCircle, Calendar, MapPin, Clock, Download } from 'lucide-react';
@@ -9,7 +9,7 @@ export function Confirmation() {
   const location = useLocation();
   const { selectedStation, date, startTime, endTime, totalPrice } = location.state || {};
 
-  const station = stations.find(s => s.id === selectedStation);
+  const station = gamingStations.find(s => s.id === selectedStation);
   const confirmationNumber = `RES${Date.now().toString().slice(-8)}`;
 
   return (
